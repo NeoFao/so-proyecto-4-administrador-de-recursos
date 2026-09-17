@@ -1,0 +1,17 @@
+COMPARATIVA DE ALGORITMOS DE PLANIFICACION
+Proyecto 1 - Simulador de Scheduling
+Dataset: procesos10.csv (10 procesos)
+
+Metrica                  FCFS              RR (q=2)          RR (q=4)
+------------------------------------------------------------------------
+T. Espera Prom.          21                24.6              24
+T. Retorno Prom.         25.9              29.5              28.9
+CPU Utilizacion (%)      100               100               100
+
+Dataset: procesos50.csv (50 procesos)
+
+Metrica                  FCFS              RR (q=2)          RR (q=4)
+------------------------------------------------------------------------
+T. Espera Prom.          115.26            155               148
+T. Retorno Prom.         122.48            162.22            155.22
+CPU Utilizacion (%)      99.449            99.449            99.449

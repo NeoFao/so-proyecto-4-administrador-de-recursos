@@ -1,0 +1,141 @@
+﻿==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\vistas
+
+==================================================================
+ MENU PRINCIPAL
+==================================================================
+   1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+   2) Monitoreo de procesos    (PID, nombre, memoria)
+   3) Monitoreo de memoria     (total, usada, disponible)
+   0) Salir
+------------------------------------------------------------------
+ Opcion: 
+   --- Gestion de archivos ---------------------------------------
+     1) Listar archivos y metadatos
+     2) Crear archivo
+     3) Ver metadatos de un archivo
+     4) Eliminar archivo
+     0) Volver al menu principal
+   ---------------------------------------------------------------
+   Opcion:      Nombre del archivo:      Contenido (puede dejarse vacio): 
+   Creado 'informe.txt' (19 bytes).
+
+   --- Gestion de archivos ---------------------------------------
+     1) Listar archivos y metadatos
+     2) Crear archivo
+     3) Ver metadatos de un archivo
+     4) Eliminar archivo
+     0) Volver al menu principal
+   ---------------------------------------------------------------
+   Opcion: 
+-- Archivos en el directorio de trabajo (RF-1) -------------------
+   C:\Users\andre\AppData\Local\Temp\p4_experimentos\vistas
+
++-------------+--------+---------------------+-----------+
+|   Nombre    | Tamano |     Modificado      | Permisos  |
++-------------+--------+---------------------+-----------+
+| informe.txt |   19 B | 2026-09-17 09:00:39 | rwxrwxrwx |
++-------------+--------+---------------------+-----------+
+
+   1 entradas, 19 B en total
+
+   --- Gestion de archivos ---------------------------------------
+     1) Listar archivos y metadatos
+     2) Crear archivo
+     3) Ver metadatos de un archivo
+     4) Eliminar archivo
+     0) Volver al menu principal
+   ---------------------------------------------------------------
+   Opcion:      Nombre del archivo: 
+-- Metadatos de 'informe.txt' ---------------------------
+
+   Tipo       : archivo
+   Tamano     : 19 bytes (19 B)
+   Modificado : 2026-09-17 09:00:39
+   Permisos   : rwxrwxrwx
+
+   Nota sobre los permisos: en Linux los nueve bits son los
+   reales del inodo, y un archivo nuevo sale como rw-r--r--. En
+   Windows no existe ese modelo --se usan listas de control de
+   acceso-- y la biblioteca estandar de C++ los reporta todos
+   activos (rwxrwxrwx), salvo que el archivo sea de solo lectura.
+
+   --- Gestion de archivos ---------------------------------------
+     1) Listar archivos y metadatos
+     2) Crear archivo
+     3) Ver metadatos de un archivo
+     4) Eliminar archivo
+     0) Volver al menu principal
+   ---------------------------------------------------------------
+   Opcion: 
+==================================================================
+ MENU PRINCIPAL
+==================================================================
+   1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+   2) Monitoreo de procesos    (PID, nombre, memoria)
+   3) Monitoreo de memoria     (total, usada, disponible)
+   0) Salir
+------------------------------------------------------------------
+ Opcion: 
+-- Procesos activos (RF-2) ---------------------------------------
+
++-------+-----------------------------+----------+
+|  PID  |           Proceso           | Memoria  |
++-------+-----------------------------+----------+
+|  3520 | Memory Compression          | 905.0 MB |
+|  3636 | workspaces.exe              | 499.3 MB |
+|  6400 | MsMpEng.exe                 | 413.2 MB |
+|  5936 | explorer.exe                | 410.3 MB |
+| 27800 | claude.exe                  | 375.4 MB |
+| 27096 | msedgewebview2.exe          | 365.4 MB |
+| 16888 | claude.exe                  | 350.8 MB |
+| 25796 | WhatsApp.Root.exe           | 242.6 MB |
+| 17880 | msedgewebview2.exe          | 199.4 MB |
+| 19332 | StartMenuExperienceHost.exe | 180.3 MB |
+|  6860 | RazerAppEngine.exe          | 171.6 MB |
+| 16188 | msedge.exe                  | 170.1 MB |
+| 22500 | NVIDIA Broadcast.exe        | 164.0 MB |
+|  3008 | TextInputHost.exe           | 142.1 MB |
+| 19308 | SearchHost.exe              | 133.8 MB |
++-------+-----------------------------+----------+
+
+   318 procesos activos en total (se muestran los 15 de mayor consumo)
+   Memoria sumada de todos: 13.0 GB
+
+==================================================================
+ MENU PRINCIPAL
+==================================================================
+   1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+   2) Monitoreo de procesos    (PID, nombre, memoria)
+   3) Monitoreo de memoria     (total, usada, disponible)
+   0) Salir
+------------------------------------------------------------------
+ Opcion: 
+-- Memoria del sistema (RF-3) ------------------------------------
+
++------------+---------+------------+
+|  Metrica   |  Valor  | Porcentaje |
++------------+---------+------------+
+| Total      | 15.9 GB |    100.0 % |
+| Usada      |  9.4 GB |     59.1 % |
+| Disponible |  6.5 GB |     40.9 % |
++------------+---------+------------+
+
+   Ocupacion: [########################................] 59.1 %
+
+==================================================================
+ MENU PRINCIPAL
+==================================================================
+   1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+   2) Monitoreo de procesos    (PID, nombre, memoria)
+   3) Monitoreo de memoria     (total, usada, disponible)
+   0) Salir
+------------------------------------------------------------------
+ Opcion: 
+Hasta luego.

@@ -1,0 +1,74 @@
+=== Simulador de Scheduling - Proyecto 1 ===
+
+Cargando procesos desde: data/procesos50.csv
+
+Procesos cargados: 50
+Algoritmos: FCFS | Round Robin (q=2) | Round Robin (q=4)
+Dataset: 50 procesos sintéticos (llegadas 0-100, ráfagas 1-15)
+
+Procesos cargados:
+  P1(37,12)  P2(96,3)   P3(73,12)  P4(60,9)   P5(15,7)
+  P6(15,2)   P7(5,7)    P8(87,6)   P9(60,3)   P10(71,10)
+  P11(2,1)   P12(97,11) P13(84,15) P14(21,1)  P15(18,15)
+  P16(18,10) P17(30,10) P18(53,1)  P19(43,1)  P20(29,8)
+  P21(61,6)  P22(14,1)  P23(29,15) P24(37,4)  P25(46,2)
+  P26(79,10) P27(20,6)  P28(51,15) P29(59,8)  P30(4,13)
+  P31(61,11) P32(17,7)  P33(6,1)   P34(95,15) P35(97,9)
+  P36(81,6)  P37(30,1)  P38(9,4)   P39(69,4)  P40(44,11)
+  P41(12,10) P42(50,13) P43(3,3)   P44(91,6)  P45(26,3)
+  P46(66,12) P47(31,7)  P48(52,4)  P49(55,9)  P50(18,1)
+
+========================================
+   FCFS (First Come, First Served)
+========================================
+Resultados FCFS:
+  T. Espera Promedio:  115.26
+  T. Retorno Promedio: 122.48
+  CPU Utilizacion:     99.449%
+
+Orden de ejecucion (por llegada):
+  P11 -> P43 -> P30 -> P7 -> P33 -> P38 -> P41 -> P22 -> P5 -> P6 ->
+  P32 -> P50 -> P15 -> P16 -> P27 -> P14 -> P45 -> P20 -> P23 -> P17 ->
+  P37 -> P47 -> P24 -> P1 -> P19 -> P40 -> P25 -> P42 -> P28 -> P48 ->
+  P18 -> P49 -> P29 -> P4 -> P9 -> P31 -> P21 -> P46 -> P39 -> P10 ->
+  P3 -> P26 -> P36 -> P13 -> P8 -> P44 -> P34 -> P2 -> P12 -> P35
+
+Diagrama Gantt - FCFS
+  P11  |  █
+  P43  |   ███
+  P30  |      █████████████
+  P7   |                   ███████
+  P33  |                          █
+  P38  |                           ████
+  P41  |                               ██████████
+  P22  |                                         █
+  P5   |                                          ███████
+  P6   |                                                 ██
+  ...  (50 procesos en total)
+
+========================================
+   Round Robin (quantum = 2)
+========================================
+Resultados Round Robin (q=2):
+  T. Espera Promedio:  155
+  T. Retorno Promedio: 162.22
+  CPU Utilizacion:     99.449%
+
+========================================
+   Round Robin (quantum = 4)
+========================================
+Resultados Round Robin (q=4):
+  T. Espera Promedio:  148
+  T. Retorno Promedio: 155.22
+  CPU Utilizacion:     99.449%
+
+========================================
+   COMPARATIVA DE ALGORITMOS
+========================================
+Dataset: procesos50.csv (50 procesos)
+
+Metrica                  FCFS              RR (q=2)          RR (q=4)
+-------------------------------------------------------------------------------
+T. Espera Prom.          115.26            155               148
+T. Retorno Prom.         122.48            162.22            155.22
+CPU Utilizacion (%)      99.449            99.449            99.449

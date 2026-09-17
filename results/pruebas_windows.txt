@@ -1,0 +1,64 @@
+﻿Compilando build\test_recursos.exe ...
+Enlaza el nucleo, la capa de plataforma y los modulos de src\io\ probables
+sin capturar la salida estandar; NO enlaza src\main.cpp, que traeria un
+segundo main. Si esta lista se desincroniza de la del Makefile, el
+enlazado falla con LNK2019.
+test_recursos.cpp
+Estadistica.cpp
+FormatoTabla.cpp
+Menu.cpp
+ReporteConsola.cpp
+Archivos.cpp
+SistemaWindows.cpp
+Generando código...
+
+OK: build\test_recursos.exe generado.
+
+==================================================================
+ Suite de pruebas -- Administrador de Recursos (Proyecto 4)
+ Plataforma: Windows
+==================================================================
+
+-- Grupo 1: gestion de archivos (RF-1) ---------------------------
+[OK] 1.1 Crear y listar
+[OK] 1.2 Metadatos: tamano, fecha y permisos
+[OK] 1.3 Eliminar
+[OK] 1.4 El directorio de trabajo se crea si no existe
+
+-- Grupo 2: frontera del directorio controlado -------------------
+[OK] 2.1 Rechaza salir con ..
+[OK] 2.2 Rechaza ruta absoluta
+[OK] 2.3 Rechaza nombre vacio
+[OK] 2.4 Acepta subdirectorio legitimo
+[OK] 2.5 No se engana con un hermano de nombre parecido
+[OK] 2.6 Rechaza el propio directorio de trabajo
+
+-- Grupo 3: contratos de error (RNF-1) ---------------------------
+[OK] 3.1 Archivo inexistente
+[OK] 3.2 Archivo duplicado, sin sobrescribir
+[OK] 3.3 Directorio de trabajo invalido
+[OK] 3.4 Permisos insuficientes: error claro (RNF-1)
+
+-- Grupo 4: memoria del sistema (RF-3) ---------------------------
+[OK] 4.1 usada + disponible = total
+[OK] 4.2 El valor es plausible
+[OK] 4.3 El total no cambia entre consultas
+
+-- Grupo 5: procesos del sistema (RF-2) --------------------------
+[OK] 5.1 La lista no viene vacia
+[OK] 5.2 Los campos se parsean bien
+[OK] 5.3 Dos consultas seguidas funcionan
+[OK] 5.4 Comando no disponible: error claro (RNF-1)
+[OK] 5.5 La plataforma se identifica sola
+[OK] 5.6 Nombres con espacios y separador de miles
+
+-- Grupo 6: utilidades -------------------------------------------
+[OK] 6.1 Cronometro monotono
+[OK] 6.2 Estadistica muestral
+[OK] 6.3 FormatoTabla
+
+------------------------------------------------------------------
+26/26 pruebas superadas
+------------------------------------------------------------------
+
+OK: la suite completa paso.

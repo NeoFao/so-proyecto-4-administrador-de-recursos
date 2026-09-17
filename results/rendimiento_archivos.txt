@@ -1,0 +1,84 @@
+﻿Resultado experimental 1 -- Rendimiento de las operaciones de archivo
+=====================================================================
+
+Cantidades 10 / 100 / 1000 archivos de 1 KB: son las que fija el
+Dataset 4 del curso. Cada medicion se repite 5 veces y se reporta
+media +- desviacion estandar muestral.
+
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 10 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+-----------------+------------+
+| Operacion | Archivos | ms (media +- s) | ms/archivo |
++-----------+----------+-----------------+------------+
+| crear     |       10 |  7.819 +- 0.305 |     0.7819 |
+| listar    |       10 |  0.232 +- 0.299 |     0.0232 |
+| metadatos |       10 |  1.496 +- 0.035 |     0.1496 |
+| eliminar  |       10 |  2.081 +- 0.070 |     0.2081 |
++-----------+----------+-----------------+------------+
+
+   AVISO: en alguna fila la desviacion supera la mitad de la media.
+   A esa escala el tiempo esta dominado por el ruido del sistema y
+   no por la operacion. Las filas de mas archivos son las fiables.
+
+   CSV escrito en: results\csv\rendimiento_10.csv
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 100 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+-----------------+------------+
+| Operacion | Archivos | ms (media +- s) | ms/archivo |
++-----------+----------+-----------------+------------+
+| crear     |      100 | 77.920 +- 3.038 |     0.7792 |
+| listar    |      100 |  0.355 +- 0.305 |     0.0035 |
+| metadatos |      100 | 14.187 +- 0.731 |     0.1419 |
+| eliminar  |      100 | 24.214 +- 0.885 |     0.2421 |
++-----------+----------+-----------------+------------+
+
+   AVISO: en alguna fila la desviacion supera la mitad de la media.
+   A esa escala el tiempo esta dominado por el ruido del sistema y
+   no por la operacion. Las filas de mas archivos son las fiables.
+
+   CSV escrito en: results\csv\rendimiento_100.csv
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 1000 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+--------------------+------------+
+| Operacion | Archivos |  ms (media +- s)   | ms/archivo |
++-----------+----------+--------------------+------------+
+| crear     |     1000 | 838.954 +- 147.691 |     0.8390 |
+| listar    |     1000 |     1.483 +- 0.315 |     0.0015 |
+| metadatos |     1000 |   143.314 +- 5.890 |     0.1433 |
+| eliminar  |     1000 |  231.441 +- 14.074 |     0.2314 |
++-----------+----------+--------------------+------------+
+
+   CSV escrito en: results\csv\rendimiento_1000.csv

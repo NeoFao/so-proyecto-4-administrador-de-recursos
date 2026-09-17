@@ -1,0 +1,49 @@
+# =============================================================================
+# Dockerfile.linux -- Entorno de verificacion de la rama de Linux.
+# Administrador Simplificado de Recursos (Proyecto 4)
+# Universidad Invenio, TIIT2007 Sistemas Operativos
+# Autor: Fabrizio Espinoza Arce
+#
+# POR QUE EXISTE ESTE FICHERO
+#
+# El requisito no funcional 2 del enunciado pide "portabilidad razonable" y
+# documentar explicitamente si la implementacion es de Linux, de Windows o de
+# ambas. En los proyectos anteriores la rama de Linux se entregaba ESCRITA PERO
+# NUNCA EJECUTADA, porque en la maquina de desarrollo no hay GCC ni Clang, y
+# habia que declararlo como limitacion.
+#
+# Con este contenedor esa limitacion desaparece: la rama de Linux se compila y
+# se ejecuta de verdad, con su propia suite de pruebas. La evidencia queda en
+# results/compatibilidad_linux.txt.
+#
+# QUE INSTALA Y POR QUE
+#   g++, make   -> compilar la herramienta y la suite
+#   procps      -> aporta `ps`, que es el comando que la rama de Linux parsea
+#                  para listar procesos. Debian no lo trae por omision, y sin
+#                  el la verificacion no probaria el camino real.
+#
+# USO (alternativa manual a scripts/verificar_linux.ps1, que usa WSL):
+#   docker build -f Dockerfile.linux -t p4-linux .
+#   docker run --rm -v "<proyecto>:/p4" p4-linux
+#
+# El contenedor ejecuta scripts/verificar_linux_interno.sh.
+# =============================================================================
+
+FROM debian:12-slim
+
+# DEBIAN_FRONTEND=noninteractive evita que apt intente abrir dialogos de
+# configuracion, que en un contenedor sin terminal interactiva lo colgarian.
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -qq \
+ && apt-get install -y -qq --no-install-recommends \
+        g++ \
+        make \
+        procps \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /p4
+
+# Por omision compila y ejecuta la suite completa. El script de verificacion
+# puede sobrescribir el comando para pedir otra cosa.
+CMD ["bash", "scripts/verificar_linux_interno.sh"]

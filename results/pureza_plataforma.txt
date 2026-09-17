@@ -1,0 +1,22 @@
+﻿Verificacion de la separacion de plataforma
+===========================================
+
+La respuesta a la pregunta de defensa 'que reescribirias para portar a
+Linux' es: solo los ficheros de src/plataforma/. Esta comprobacion es lo
+que convierte esa respuesta en un hecho y no en una estimacion.
+
+Se busca la directiva #include <windows.h> FUERA de src/plataforma/.
+LA SALIDA VACIA ES LA EVIDENCIA.
+
+Ficheros examinados: 10 + src/main.cpp
+Coincidencias fuera de plataforma/: 0
+
+RESULTADO: salida vacia. Todo lo especifico de Windows esta
+confinado en src/plataforma/SistemaWindows.cpp.
+
+Ficheros especificos de plataforma (los unicos a reescribir):
+  src/plataforma/Archivos.cpp
+  src/plataforma/Archivos.h
+  src/plataforma/Sistema.h
+  src/plataforma/SistemaLinux.cpp
+  src/plataforma/SistemaWindows.cpp

@@ -1,0 +1,36 @@
+# Artefactos de compilacion
+build/
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.o
+*.d
+*.a
+
+# Directorios de trabajo que crea la herramienta al demostrarse.
+#
+# EJECUTAR.bat crea demo/, demo_bench/ y demo_protegido/ para enseñar las funciones, y el
+# script de experimentos usa una carpeta en %TEMP%. Ninguno es entregable:
+# son el area sobre la que la herramienta opera, no evidencia.
+demo/
+demo_bench/
+demo_protegido/
+trabajo/
+
+# Editores
+.vs/
+.vscode/ipch/
+*.user
+
+# Cache de bytecode de Python
+__pycache__/
+*.pyc
+
+# Dependencias de reportes/documentacion
+node_modules/
+
+# NOTA: results/ NO se ignora. La evidencia experimental es un entregable del
+# proyecto y debe versionarse: el enunciado exige "evidencia de pruebas de
+# carga (capturas/logs)" y "resultados experimentales", y los datos crudos son
+# lo que permite a un evaluador recalcular los resumenes y comprobarlos.

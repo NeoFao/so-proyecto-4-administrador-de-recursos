@@ -1,0 +1,5 @@
+plataforma,operacion,archivos,repeticiones,ms_media,ms_desv,ms_por_archivo
+"Windows","crear",1000,5,838.954,147.691,0.838954
+"Windows","listar",1000,5,1.48302,0.314868,0.00148302
+"Windows","metadatos",1000,5,143.314,5.88963,0.143314
+"Windows","eliminar",1000,5,231.441,14.0744,0.231441

@@ -1,0 +1,214 @@
+﻿Evidencia de compatibilidad -- rama de Linux
+=====================================================================
+
+Generado: 2026-09-17 08:57:51
+
+ENTORNO
+  Distribucion : Ubuntu 26.04 LTS
+  Kernel       : 6.6.87.2-microsoft-standard-WSL2
+  Compilador   : g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+  Banderas     : -std=c++17 -O2 -Wall -Wextra -Wpedantic
+
+COMPILACION
+  Advertencias: 0
+
+SUITE DE PRUEBAS EN LINUX
+
+  -- Grupo 1: gestion de archivos (RF-1) ---------------------------
+  [OK] 1.1 Crear y listar
+  [OK] 1.2 Metadatos: tamano, fecha y permisos
+  [OK] 1.3 Eliminar
+  [OK] 1.4 El directorio de trabajo se crea si no existe
+  -- Grupo 2: frontera del directorio controlado -------------------
+  [OK] 2.1 Rechaza salir con ..
+  [OK] 2.2 Rechaza ruta absoluta
+  [OK] 2.3 Rechaza nombre vacio
+  [OK] 2.4 Acepta subdirectorio legitimo
+  [OK] 2.5 No se engana con un hermano de nombre parecido
+  [OK] 2.6 Rechaza el propio directorio de trabajo
+  -- Grupo 3: contratos de error (RNF-1) ---------------------------
+  [OK] 3.1 Archivo inexistente
+  [OK] 3.2 Archivo duplicado, sin sobrescribir
+  [OK] 3.3 Directorio de trabajo invalido
+  [OK] 3.4 Permisos insuficientes: error claro (RNF-1)
+  -- Grupo 4: memoria del sistema (RF-3) ---------------------------
+  [OK] 4.1 usada + disponible = total
+  [OK] 4.2 El valor es plausible
+  [OK] 4.3 El total no cambia entre consultas
+  -- Grupo 5: procesos del sistema (RF-2) --------------------------
+  [OK] 5.1 La lista no viene vacia
+  [OK] 5.2 Los campos se parsean bien
+  [OK] 5.3 Dos consultas seguidas funcionan
+  [OK] 5.4 Comando no disponible: error claro (RNF-1)
+  [OK] 5.5 La plataforma se identifica sola
+  [OK] 5.6 Nombres con espacios y separador de miles
+  -- Grupo 6: utilidades -------------------------------------------
+  [OK] 6.1 Cronometro monotono
+  [OK] 6.2 Estadistica muestral
+  [OK] 6.3 FormatoTabla
+  26/26 pruebas superadas
+
+DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
+
+  ==================================================================
+   Administrador Simplificado de Recursos -- Proyecto 4
+   Universidad Invenio, TIIT2007 Sistemas Operativos
+   Fabrizio Espinoza Arce
+  ==================================================================
+   Plataforma          : Linux
+   Comando de procesos : ps -e -o pid=,comm=,rss=
+   Directorio de trabajo: /home/faoearce/p4_verif/demo
+  
+  ==================================================================
+   MENU PRINCIPAL
+  ==================================================================
+     1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+     2) Monitoreo de procesos    (PID, nombre, memoria)
+     3) Monitoreo de memoria     (total, usada, disponible)
+     0) Salir
+  ------------------------------------------------------------------
+   Opcion: 
+     --- Gestion de archivos ---------------------------------------
+       1) Listar archivos y metadatos
+       2) Crear archivo
+       3) Ver metadatos de un archivo
+       4) Eliminar archivo
+       0) Volver al menu principal
+     ---------------------------------------------------------------
+     Opcion:      Nombre del archivo:      Contenido (puede dejarse vacio): 
+     Creado 'informe.txt' (19 bytes).
+  
+     --- Gestion de archivos ---------------------------------------
+       1) Listar archivos y metadatos
+       2) Crear archivo
+       3) Ver metadatos de un archivo
+       4) Eliminar archivo
+       0) Volver al menu principal
+     ---------------------------------------------------------------
+     Opcion: 
+  -- Archivos en el directorio de trabajo (RF-1) -------------------
+     /home/faoearce/p4_verif/demo
+  
+  +-------------+--------+---------------------+-----------+
+  |   Nombre    | Tamano |     Modificado      | Permisos  |
+  +-------------+--------+---------------------+-----------+
+  | informe.txt |   19 B | 2026-09-17 08:58:04 | rw-r--r-- |
+  +-------------+--------+---------------------+-----------+
+  
+     1 entradas, 19 B en total
+  
+     --- Gestion de archivos ---------------------------------------
+       1) Listar archivos y metadatos
+       2) Crear archivo
+       3) Ver metadatos de un archivo
+       4) Eliminar archivo
+       0) Volver al menu principal
+     ---------------------------------------------------------------
+     Opcion:      Nombre del archivo: 
+  -- Metadatos de 'informe.txt' ---------------------------
+  
+     Tipo       : archivo
+     Tamano     : 19 bytes (19 B)
+     Modificado : 2026-09-17 08:58:04
+     Permisos   : rw-r--r--
+  
+     Nota sobre los permisos: en Linux los nueve bits son los
+     reales del inodo, y un archivo nuevo sale como rw-r--r--. En
+     Windows no existe ese modelo --se usan listas de control de
+     acceso-- y la biblioteca estandar de C++ los reporta todos
+     activos (rwxrwxrwx), salvo que el archivo sea de solo lectura.
+  
+     --- Gestion de archivos ---------------------------------------
+       1) Listar archivos y metadatos
+       2) Crear archivo
+       3) Ver metadatos de un archivo
+       4) Eliminar archivo
+       0) Volver al menu principal
+     ---------------------------------------------------------------
+     Opcion: 
+  ==================================================================
+   MENU PRINCIPAL
+  ==================================================================
+     1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+     2) Monitoreo de procesos    (PID, nombre, memoria)
+     3) Monitoreo de memoria     (total, usada, disponible)
+     0) Salir
+  ------------------------------------------------------------------
+   Opcion: your 131072x1 screen size is bogus. expect trouble
+  
+  -- Procesos activos (RF-2) ---------------------------------------
+  
+  +-----+-----------------+---------+
+  | PID |     Proceso     | Memoria |
+  +-----+-----------------+---------+
+  | 320 | unattended-upgr | 31.1 MB |
+  | 122 | networkd-dispat | 27.2 MB |
+  |  47 | systemd-journal | 15.2 MB |
+  |   1 | systemd         | 14.1 MB |
+  |  65 | systemd-resolve | 13.6 MB |
+  | 460 | systemd         | 12.9 MB |
+  | 154 | wsl-pro-service | 12.8 MB |
+  |  88 | systemd-udevd   | 11.4 MB |
+  | 231 | chronyd         | 10.6 MB |
+  | 142 | systemd-logind  |  8.5 MB |
+  | 342 | systemd-timedat |  7.0 MB |
+  | 562 | (udev-worker)   |  6.5 MB |
+  | 563 | (udev-worker)   |  6.5 MB |
+  | 564 | (udev-worker)   |  6.5 MB |
+  | 565 | (udev-worker)   |  6.5 MB |
+  +-----+-----------------+---------+
+  
+     35 procesos activos en total (se muestran los 15 de mayor consumo)
+     Memoria sumada de todos: 256.7 MB
+  
+  ==================================================================
+   MENU PRINCIPAL
+  ==================================================================
+     1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+     2) Monitoreo de procesos    (PID, nombre, memoria)
+     3) Monitoreo de memoria     (total, usada, disponible)
+     0) Salir
+  ------------------------------------------------------------------
+   Opcion: 
+  -- Memoria del sistema (RF-3) ------------------------------------
+  
+  +------------+----------+------------+
+  |  Metrica   |  Valor   | Porcentaje |
+  +------------+----------+------------+
+  | Total      |   7.7 GB |    100.0 % |
+  | Usada      | 525.2 MB |      6.7 % |
+  | Disponible |   7.2 GB |     93.3 % |
+  +------------+----------+------------+
+  
+     Ocupacion: [###.....................................] 6.7 %
+  
+  ==================================================================
+   MENU PRINCIPAL
+  ==================================================================
+     1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+     2) Monitoreo de procesos    (PID, nombre, memoria)
+     3) Monitoreo de memoria     (total, usada, disponible)
+     0) Salir
+  ------------------------------------------------------------------
+   Opcion: 
+  Hasta luego.
+
+RENDIMIENTO EN LINUX (100 archivos, 5 repeticiones, tras calentamiento)
+
+  | Operacion | Archivos | ms (media +- s) | ms/archivo |
+  | crear     |      100 |  5.128 +- 0.199 |     0.0513 |
+  | listar    |      100 |  0.774 +- 0.028 |     0.0077 |
+  | metadatos |      100 |  2.075 +- 0.081 |     0.0207 |
+  | eliminar  |      100 |  3.266 +- 0.055 |     0.0327 |
+
+=====================================================================
+RESULTADO: la rama de Linux compila sin advertencias, pasa la suite
+completa y ejecuta las tres funciones del enunciado.
+
+ALCANCE DE ESTA EVIDENCIA, declarado con precision:
+  WSL usa un kernel Linux real, asi que /proc/meminfo y ps son los
+  de Linux y el codigo ejercitado es el mismo que correria en una
+  maquina Linux nativa. Lo que WSL no reproduce es el hardware ni la
+  carga de un servidor real: por eso las CIFRAS de las dos
+  plataformas no son comparables entre si. Lo que si queda
+  demostrado es que el mismo codigo fuente funciona en ambas.

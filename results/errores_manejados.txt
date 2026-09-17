@@ -1,0 +1,51 @@
+﻿Requisito no funcional 1 -- Manejo robusto de errores
+=====================================================================
+
+El enunciado nombra tres casos: archivo inexistente, permisos
+insuficientes y comando no disponible. Los tres se provocan de verdad
+y se muestra la respuesta real de la herramienta. Ninguno termina el
+programa de forma anormal: todos vuelven al menu con un mensaje que
+dice que paso. Al final se anaden tres casos adicionales.
+
+--- CASO 1 (enunciado): archivo inexistente ---
+
+>    ERROR al consultar los metadatos:
+     no existe 'no_existe.txt' en el directorio de trabajo
+
+
+
+--- CASO 2 (enunciado): permisos insuficientes ---
+    (icacls <dir> /deny *S-1-1-0:(W,AD) -- se deniega escribir en el directorio)
+
+>    ERROR al crear el archivo:
+     no se pudo acceder a 'nuevo.txt': permisos insuficientes (Access is denied.). Compruebe los permisos de 
+C:\Users\andre\AppData\Local\Temp\p4_experimentos\protegido
+
+
+
+--- CASO 3 (enunciado): comando no disponible ---
+    (prueba 5.4 de la suite: listarProcesosCon() con un comando inexistente)
+    [OK] 5.4 Comando no disponible: error claro (RNF-1)
+
+--- ADICIONAL A: intento de escribir fuera del directorio controlado ---
+
+>    ERROR al crear el archivo:
+     '../../intruso.txt' apunta fuera del directorio de trabajo 
+(C:\Users\andre\AppData\Local\Temp\p4_experimentos\errores). La herramienta solo opera dentro de esa carpeta
+
+
+
+--- ADICIONAL B: intento de eliminar el propio directorio de trabajo ---
+
+>    ERROR al eliminar el archivo:
+     '.' designa el propio directorio de trabajo, no un archivo dentro de el
+
+
+    El directorio sigue existiendo despues del intento: True
+
+--- ADICIONAL C: opcion de menu invalida ---
+
+   'abc' no es una opcion valida. Escriba 1, 2, 3 o 0.
+   '99' no es una opcion valida. Escriba 1, 2, 3 o 0.
+
+

@@ -1,0 +1,21 @@
+﻿==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\vistas
+
+-- Consumo de la propia herramienta (RE-3) -----------------------
+
++------------------------------+---------+
+|           Metrica            |  Valor  |
++------------------------------+---------+
+| PID de la herramienta        |    9160 |
+| Memoria residente            |  4.0 MB |
+| Sobre la memoria del sistema | 0.025 % |
++------------------------------+---------+
+
+   Se mide con el mismo mecanismo que el resto de procesos,
+   filtrando por el PID propio: no hace falta codigo adicional.

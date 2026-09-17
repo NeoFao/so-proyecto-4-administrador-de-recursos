@@ -1,0 +1,142 @@
+﻿==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\vistas
+
+-- Memoria del sistema (RF-3) ------------------------------------
+
++------------+---------+------------+
+|  Metrica   |  Valor  | Porcentaje |
++------------+---------+------------+
+| Total      | 15.9 GB |    100.0 % |
+| Usada      | 13.7 GB |     86.4 % |
+| Disponible |  2.2 GB |     13.6 % |
++------------+---------+------------+
+
+   Ocupacion: [###################################.....] 86.4 %
+
+COMPROBACION DE QUE LA CARGA EXISTIO
+  Memoria fisica total                 : 16271 MB
+  Disponible antes de la carga         : 6626 MB
+  Disponible con la carga de memoria   : 2240 MB
+  Memoria ocupada por la carga         : 4386 MB (objetivo 4185 MB)
+  Trabajos de CPU en ejecucion         : 12 (uno por procesador logico)
+  Uso de CPU al empezar a medir        : 100 % (media de 5 muestras)
+
+
+Resultado experimental 2 -- Comportamiento bajo carga
+=====================================================================
+
+Carga generada por scripts/correr_experimentos.ps1 segun los
+Laboratorios 4 y 6: un trabajo que reserva y escribe 4185 MB de
+memoria, y 12 trabajos de CPU en bucle. Se repiten las mismas
+mediciones del RE-1 para poder compararlas linea a linea.
+
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 10 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+-----------------+------------+
+| Operacion | Archivos | ms (media +- s) | ms/archivo |
++-----------+----------+-----------------+------------+
+| crear     |       10 | 14.376 +- 2.030 |     1.4376 |
+| listar    |       10 |  0.443 +- 0.494 |     0.0443 |
+| metadatos |       10 |  3.164 +- 0.824 |     0.3164 |
+| eliminar  |       10 |  3.299 +- 0.361 |     0.3299 |
++-----------+----------+-----------------+------------+
+
+   AVISO: en alguna fila la desviacion supera la mitad de la media.
+   A esa escala el tiempo esta dominado por el ruido del sistema y
+   no por la operacion. Las filas de mas archivos son las fiables.
+
+   CSV escrito en: results\csv\carga_10.csv
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 100 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+------------------+------------+
+| Operacion | Archivos | ms (media +- s)  | ms/archivo |
++-----------+----------+------------------+------------+
+| crear     |      100 | 141.763 +- 7.031 |     1.4176 |
+| listar    |      100 |   0.726 +- 0.434 |     0.0073 |
+| metadatos |      100 |  27.827 +- 0.931 |     0.2783 |
+| eliminar  |      100 | 48.983 +- 16.031 |     0.4898 |
++-----------+----------+------------------+------------+
+
+   AVISO: en alguna fila la desviacion supera la mitad de la media.
+   A esa escala el tiempo esta dominado por el ruido del sistema y
+   no por la operacion. Las filas de mas archivos son las fiables.
+
+   CSV escrito en: results\csv\carga_100.csv
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\bench
+
+   Midiendo con 1000 archivos de 1 KB, 5 repeticiones...
+
+-- Rendimiento de las operaciones de archivo (RE-1) --------------
+
++-----------+----------+---------------------+------------+
+| Operacion | Archivos |   ms (media +- s)   | ms/archivo |
++-----------+----------+---------------------+------------+
+| crear     |     1000 | 1846.343 +- 264.380 |     1.8463 |
+| listar    |     1000 |      5.675 +- 1.264 |     0.0057 |
+| metadatos |     1000 |   339.488 +- 36.331 |     0.3395 |
+| eliminar  |     1000 |   432.185 +- 34.845 |     0.4322 |
++-----------+----------+---------------------+------------+
+
+   CSV escrito en: results\csv\carga_1000.csv
+==================================================================
+ Administrador Simplificado de Recursos -- Proyecto 4
+ Universidad Invenio, TIIT2007 Sistemas Operativos
+ Fabrizio Espinoza Arce
+==================================================================
+ Plataforma          : Windows
+ Comando de procesos : tasklist /FO CSV /NH
+ Directorio de trabajo: C:\Users\andre\AppData\Local\Temp\p4_experimentos\vistas
+
+-- Consumo de la propia herramienta (RE-3) -----------------------
+
++------------------------------+---------+
+|           Metrica            |  Valor  |
++------------------------------+---------+
+| PID de la herramienta        |   14244 |
+| Memoria residente            |  4.0 MB |
+| Sobre la memoria del sistema | 0.025 % |
++------------------------------+---------+
+
+   Se mide con el mismo mecanismo que el resto de procesos,
+   filtrando por el PID propio: no hace falta codigo adicional.
+
+COMPROBACION AL TERMINAR LAS MEDICIONES
+  Trabajos de carga aun en ejecucion   : 13 de 13
+  Memoria disponible                   : 2415 MB
+  Uso de CPU                           : 100 %
+
