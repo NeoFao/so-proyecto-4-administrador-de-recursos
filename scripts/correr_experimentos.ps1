@@ -142,8 +142,10 @@ $guion = @(
     "1",                                             # listar
     "3", "informe.txt",                              # metadatos
     "0",                                             # volver
-    "2",                                             # procesos
+    "2",                                             # procesos (primera pagina)
+    "0",                                             # salir del paginado
     "3",                                             # memoria
+    "4",                                             # consumo propio (RE-3)
     "0"                                              # salir
 ) -join "`n"
 

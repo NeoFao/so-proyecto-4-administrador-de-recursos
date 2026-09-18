@@ -17,7 +17,7 @@
 // Eso tiene tres consecuencias practicas:
 //
 //   1. El menu se puede conducir desde un fichero o desde una tuberia, que es
-//      como EJECUTAR.bat demuestra las tres funciones sin que nadie teclee.
+//      como "EJECUTAR (Demostraciones).bat" recorre las tres funciones sin que nadie teclee.
 //   2. La salida se puede volcar a un fichero para generar evidencia.
 //   3. Es probable sin capturar la salida estandar del proceso.
 //
@@ -55,6 +55,7 @@ private:
     void opcionArchivos();
     void opcionProcesos();
     void opcionMemoria();
+    void opcionAutoconsumo();
 
     void archivosListar();
     void archivosCrear();

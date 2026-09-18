@@ -13,6 +13,7 @@
    1) Gestion de archivos      (crear, listar, eliminar, metadatos)
    2) Monitoreo de procesos    (PID, nombre, memoria)
    3) Monitoreo de memoria     (total, usada, disponible)
+   4) Consumo de esta herramienta
    0) Salir
 ------------------------------------------------------------------
  Opcion: 
@@ -40,10 +41,12 @@
 +-------------+--------+---------------------+-----------+
 |   Nombre    | Tamano |     Modificado      | Permisos  |
 +-------------+--------+---------------------+-----------+
-| informe.txt |   19 B | 2026-09-17 09:00:39 | rwxrwxrwx |
+| informe.txt |   19 B | 2026-09-17 18:49:51 | rwxrwxrwx |
 +-------------+--------+---------------------+-----------+
 
    1 entradas, 19 B en total
+   Permisos: r leer, w escribir, x ejecutar; en tres grupos,
+   dueno / grupo / otros. Un guion es un permiso que no esta.
 
    --- Gestion de archivos ---------------------------------------
      1) Listar archivos y metadatos
@@ -57,8 +60,9 @@
 
    Tipo       : archivo
    Tamano     : 19 bytes (19 B)
-   Modificado : 2026-09-17 09:00:39
+   Modificado : 2026-09-17 18:49:51
    Permisos   : rwxrwxrwx
+                (segun estas letras, todos pueden leer, escribir y ejecutar)
 
    Nota sobre los permisos: en Linux los nueve bits son los
    reales del inodo, y un archivo nuevo sale como rw-r--r--. En
@@ -80,40 +84,45 @@
    1) Gestion de archivos      (crear, listar, eliminar, metadatos)
    2) Monitoreo de procesos    (PID, nombre, memoria)
    3) Monitoreo de memoria     (total, usada, disponible)
+   4) Consumo de esta herramienta
    0) Salir
 ------------------------------------------------------------------
  Opcion: 
--- Procesos activos (RF-2) ---------------------------------------
+-- Procesos activos (RF-2) -- pagina 1 de 28 ------------------
 
-+-------+-----------------------------+----------+
-|  PID  |           Proceso           | Memoria  |
-+-------+-----------------------------+----------+
-|  3520 | Memory Compression          | 905.0 MB |
-|  3636 | workspaces.exe              | 499.3 MB |
-|  6400 | MsMpEng.exe                 | 413.2 MB |
-|  5936 | explorer.exe                | 410.3 MB |
-| 27800 | claude.exe                  | 375.4 MB |
-| 27096 | msedgewebview2.exe          | 365.4 MB |
-| 16888 | claude.exe                  | 350.8 MB |
-| 25796 | WhatsApp.Root.exe           | 242.6 MB |
-| 17880 | msedgewebview2.exe          | 199.4 MB |
-| 19332 | StartMenuExperienceHost.exe | 180.3 MB |
-|  6860 | RazerAppEngine.exe          | 171.6 MB |
-| 16188 | msedge.exe                  | 170.1 MB |
-| 22500 | NVIDIA Broadcast.exe        | 164.0 MB |
-|  3008 | TextInputHost.exe           | 142.1 MB |
-| 19308 | SearchHost.exe              | 133.8 MB |
-+-------+-----------------------------+----------+
++-------+--------------------+----------+
+|  PID  |      Proceso       | Memoria  |
++-------+--------------------+----------+
+|  3520 | Memory Compression |   1.2 GB |
+| 40584 | vmmemWSL           | 645.2 MB |
+| 22768 | msedge.exe         | 579.4 MB |
+| 30624 | Discord.exe        | 421.0 MB |
+| 25728 | msedgewebview2.exe | 380.1 MB |
+| 27800 | claude.exe         | 352.9 MB |
+|  5936 | explorer.exe       | 332.5 MB |
+|  6400 | MsMpEng.exe        | 290.4 MB |
+| 13016 | msedgewebview2.exe | 263.1 MB |
+| 33284 | Code.exe           | 209.5 MB |
+| 26964 | Photos.exe         | 206.6 MB |
+| 39828 | Photos.exe         | 204.4 MB |
+| 36548 | Photos.exe         | 202.5 MB |
+| 21872 | chrome.exe         | 176.3 MB |
+| 36684 | chrome.exe         | 150.9 MB |
++-------+--------------------+----------+
 
-   318 procesos activos en total (se muestran los 15 de mayor consumo)
-   Memoria sumada de todos: 13.0 GB
+   Puestos 1 a 15, ordenados por memoria
 
+   415 procesos activos en total
+   Memoria sumada de todos: 11.0 GB (cuenta varias veces las paginas compartidas)
+
+   [Enter] pagina siguiente   [a] anterior   [0] volver: 
 ==================================================================
  MENU PRINCIPAL
 ==================================================================
    1) Gestion de archivos      (crear, listar, eliminar, metadatos)
    2) Monitoreo de procesos    (PID, nombre, memoria)
    3) Monitoreo de memoria     (total, usada, disponible)
+   4) Consumo de esta herramienta
    0) Salir
 ------------------------------------------------------------------
  Opcion: 
@@ -123,11 +132,11 @@
 |  Metrica   |  Valor  | Porcentaje |
 +------------+---------+------------+
 | Total      | 15.9 GB |    100.0 % |
-| Usada      |  9.4 GB |     59.1 % |
-| Disponible |  6.5 GB |     40.9 % |
+| Usada      | 12.0 GB |     75.6 % |
+| Disponible |  3.9 GB |     24.4 % |
 +------------+---------+------------+
 
-   Ocupacion: [########################................] 59.1 %
+   Ocupacion: [##############################..........] 75.6 %
 
 ==================================================================
  MENU PRINCIPAL
@@ -135,6 +144,30 @@
    1) Gestion de archivos      (crear, listar, eliminar, metadatos)
    2) Monitoreo de procesos    (PID, nombre, memoria)
    3) Monitoreo de memoria     (total, usada, disponible)
+   4) Consumo de esta herramienta
+   0) Salir
+------------------------------------------------------------------
+ Opcion: 
+-- Consumo de la propia herramienta (RE-3) -----------------------
+
++------------------------------+---------+
+|           Metrica            |  Valor  |
++------------------------------+---------+
+| PID de la herramienta        |   41224 |
+| Memoria residente            |  4.1 MB |
+| Sobre la memoria del sistema | 0.025 % |
++------------------------------+---------+
+
+   Se mide con el mismo mecanismo que el resto de procesos,
+   filtrando por el PID propio: no hace falta codigo adicional.
+
+==================================================================
+ MENU PRINCIPAL
+==================================================================
+   1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+   2) Monitoreo de procesos    (PID, nombre, memoria)
+   3) Monitoreo de memoria     (total, usada, disponible)
+   4) Consumo de esta herramienta
    0) Salir
 ------------------------------------------------------------------
  Opcion: 

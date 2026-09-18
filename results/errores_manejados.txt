@@ -45,7 +45,7 @@ C:\Users\andre\AppData\Local\Temp\p4_experimentos\protegido
 
 --- ADICIONAL C: opcion de menu invalida ---
 
-   'abc' no es una opcion valida. Escriba 1, 2, 3 o 0.
-   '99' no es una opcion valida. Escriba 1, 2, 3 o 0.
+   'abc' no es una opcion valida. Escriba 1, 2, 3, 4 o 0.
+   '99' no es una opcion valida. Escriba 1, 2, 3, 4 o 0.
 
 

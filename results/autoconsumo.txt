@@ -12,9 +12,9 @@
 +------------------------------+---------+
 |           Metrica            |  Valor  |
 +------------------------------+---------+
-| PID de la herramienta        |    9160 |
+| PID de la herramienta        |   29896 |
 | Memoria residente            |  4.0 MB |
-| Sobre la memoria del sistema | 0.025 % |
+| Sobre la memoria del sistema | 0.024 % |
 +------------------------------+---------+
 
    Se mide con el mismo mecanismo que el resto de procesos,

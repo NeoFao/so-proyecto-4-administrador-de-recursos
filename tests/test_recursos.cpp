@@ -43,9 +43,13 @@
 #include <string>
 #include <vector>
 
+#include <sstream>
+
 #include "core/Cronometro.h"
 #include "core/Estadistica.h"
 #include "io/FormatoTabla.h"
+#include "io/Menu.h"
+#include "io/ReporteConsola.h"
 #include "plataforma/Archivos.h"
 #include "plataforma/Sistema.h"
 
@@ -663,6 +667,116 @@ void prueba_estadistica() {
                      "una sola observacion no tiene dispersion que estimar");
 }
 
+// Lista sintetica de procesos: 33 entradas con memoria decreciente, para
+// comprobar el paginado sin depender de cuantos procesos tenga la maquina.
+std::vector<rec::ProcesoInfo> procesosDePrueba(std::size_t cuantos) {
+    std::vector<rec::ProcesoInfo> v;
+    for (std::size_t i = 0; i < cuantos; ++i) {
+        rec::ProcesoInfo p;
+        p.pid = static_cast<unsigned long>(1000 + i);
+        p.nombre = "proc" + std::to_string(i);
+        p.memoriaKb = static_cast<unsigned long long>((cuantos - i) * 1024);
+        v.push_back(p);
+    }
+    return v;
+}
+
+void prueba_paginadoDeProcesos() {
+    std::vector<rec::ProcesoInfo> procesos = procesosDePrueba(33);
+    rec::ordenarPorMemoria(procesos);
+
+    // 33 procesos de 15 en 15 son 3 paginas: 15 + 15 + 3.
+    std::ostringstream primera;
+    const std::size_t total = rec::imprimirPaginaProcesos(primera, procesos, 0, 15);
+    afirmarIgual(static_cast<long long>(total), 3, "33 procesos de 15 en 15 son 3 paginas");
+    afirmar(primera.str().find("pagina 1 de 3") != std::string::npos,
+            "la primera pagina se anuncia como 1 de 3");
+    afirmar(primera.str().find("proc0") != std::string::npos,
+            "la primera pagina trae el de mayor consumo");
+    afirmar(primera.str().find("proc20") == std::string::npos,
+            "la primera pagina NO trae procesos de la pagina siguiente");
+
+    std::ostringstream ultima;
+    rec::imprimirPaginaProcesos(ultima, procesos, 2, 15);
+    afirmar(ultima.str().find("pagina 3 de 3") != std::string::npos,
+            "la ultima pagina se anuncia como 3 de 3");
+    afirmar(ultima.str().find("Puestos 31 a 33") != std::string::npos,
+            "la ultima pagina dice que puestos muestra, y son 3");
+    afirmar(ultima.str().find("proc32") != std::string::npos,
+            "la ultima pagina trae el de menor consumo");
+
+    // Pedir una pagina que no existe no debe romper: se muestra la ultima.
+    std::ostringstream fuera;
+    rec::imprimirPaginaProcesos(fuera, procesos, 99, 15);
+    afirmar(fuera.str().find("pagina 3 de 3") != std::string::npos,
+            "una pagina fuera de rango se recorta a la ultima");
+}
+
+void prueba_listadoSinLimite() {
+    const std::vector<rec::ProcesoInfo> procesos = procesosDePrueba(20);
+
+    std::ostringstream recortado;
+    rec::imprimirProcesos(recortado, procesos, 5);
+    afirmar(recortado.str().find("Se muestran los 5 de mayor consumo") != std::string::npos,
+            "con limite, se avisa de que la lista viene recortada");
+    afirmar(recortado.str().find("proc19") == std::string::npos,
+            "con limite 5 no aparece el vigesimo proceso");
+
+    std::ostringstream completo;
+    rec::imprimirProcesos(completo, procesos, rec::sinLimite());
+    afirmar(completo.str().find("proc19") != std::string::npos,
+            "sin limite (--todos) aparecen todos los procesos");
+    afirmar(completo.str().find("Se muestran los") == std::string::npos,
+            "sin limite no se avisa de recorte, porque no lo hay");
+}
+
+void prueba_permisosEnPalabras() {
+    // Lo que la herramienta pone entre parentesis junto a los nueve caracteres,
+    // para que se entienda sin conocer la notacion de Unix.
+    const std::string linux_ = rec::permisosEnPalabras("rw-r--r--");
+    afirmar(linux_.find("dueno: leer y escribir") != std::string::npos,
+            "el dueno de un rw-r--r-- lee y escribe, y dijo: " + linux_);
+    afirmar(linux_.find("otros: leer") != std::string::npos,
+            "los otros solo leen, y dijo: " + linux_);
+
+    // Cuando los tres grupos coinciden --lo normal en Windows-- se dice una
+    // vez, no tres.
+    const std::string todo = rec::permisosEnPalabras("rwxrwxrwx");
+    afirmar(todo == "todos pueden leer, escribir y ejecutar",
+            "rwxrwxrwx se resume en una frase, y dijo: " + todo);
+
+    const std::string soloLectura = rec::permisosEnPalabras("r-xr-xr-x");
+    afirmar(soloLectura == "todos pueden leer y ejecutar",
+            "r-xr-xr-x es leer y ejecutar, y dijo: " + soloLectura);
+
+    afirmar(rec::permisosEnPalabras("---------") == "todos pueden ningun permiso" ||
+                rec::permisosEnPalabras("---------").find("ningun permiso") != std::string::npos,
+            "sin ningun bit se dice que no hay permisos");
+    afirmar(rec::permisosEnPalabras("rw-").find("no reconocido") != std::string::npos,
+            "una cadena que no tiene nueve caracteres se rechaza sin inventar");
+}
+
+void prueba_menuMuestraAutoconsumo() {
+    // RE-3 tiene que estar en el MENU, no solo en la linea de comandos: es lo
+    // que abre quien evalua. Se conduce el menu con la opcion 4 y se comprueba
+    // que aparece la vista y que despues se puede salir.
+    DirectorioTemporal dir;
+    rec::GestorArchivos gestor(dir.ruta());
+
+    std::istringstream entrada("4\n0\n");
+    std::ostringstream salida;
+    rec::Menu menu(entrada, salida, gestor);
+    menu.ejecutar();
+
+    const std::string texto = salida.str();
+    afirmar(texto.find("4) Consumo de esta herramienta") != std::string::npos,
+            "el menu principal ofrece el consumo propio");
+    afirmar(texto.find("Consumo de la propia herramienta (RE-3)") != std::string::npos,
+            "la opcion 4 muestra la vista de autoconsumo");
+    afirmar(texto.find("PID de la herramienta") != std::string::npos,
+            "la vista incluye el PID propio");
+}
+
 void prueba_formatoTabla() {
     rec::FormatoTabla tabla;
     tabla.agregarColumna("Archivo", rec::Alineacion::Izquierda);
@@ -728,6 +842,10 @@ int main() {
     ejecutar("6.1 Cronometro monotono", prueba_cronometroMide);
     ejecutar("6.2 Estadistica muestral", prueba_estadistica);
     ejecutar("6.3 FormatoTabla", prueba_formatoTabla);
+    ejecutar("6.4 Paginado de la lista de procesos", prueba_paginadoDeProcesos);
+    ejecutar("6.5 Listado completo con --todos", prueba_listadoSinLimite);
+    ejecutar("6.6 Permisos explicados en palabras", prueba_permisosEnPalabras);
+    ejecutar("6.7 El menu ofrece el consumo propio (RE-3)", prueba_menuMuestraAutoconsumo);
 
     std::cout << "\n------------------------------------------------------------------\n";
     std::cout << pruebasSuperadas << "/" << totalPruebas << " pruebas superadas\n";

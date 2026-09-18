@@ -12,18 +12,18 @@ Se construyó una herramienta de consola en C++17 que integra gestión básica d
 archivos y monitoreo de procesos y memoria del sistema anfitrión. Todo el
 código dependiente del sistema operativo está confinado en un único
 directorio, lo que permitió compilar y **ejecutar la misma herramienta en
-Windows y en Linux**: la suite de 26 pruebas pasa en ambos, con cero
+Windows y en Linux**: la suite de 30 pruebas pasa en ambos, con cero
 advertencias en MSVC `/W4` y en g++ `-Wall -Wextra -Wpedantic`. Los tres
 casos de error del enunciado —archivo inexistente, permisos insuficientes y
 comando no disponible— se provocan de verdad y se prueban. Con 1000 archivos,
-crear, consultar metadatos y eliminar cuestan 0,84, 0,14 y 0,23 milisegundos
-por archivo, con un coste por archivo estable entre escalas. Listar 1000
-archivos con todos sus metadatos tarda 1,5 milisegundos en total, casi cien
-veces menos que consultar esos mismos metadatos archivo por archivo: la
+crear y eliminar cuestan 0,89 y 0,23 milisegundos por archivo, con un coste
+por archivo estable entre escalas. Listar 1000 archivos con todos sus
+metadatos tarda 1,6 milisegundos en total, mientras que consultar esos mismos
+metadatos archivo por archivo cuesta unos dos órdenes de magnitud más: la
 diferencia entre una llamada al sistema por lote y una por archivo decide el
-rendimiento. Con la memoria del sistema al 86 % y los doce procesadores
-lógicos al 100 %, las operaciones se ralentizan entre 1,6 y 3,8 veces, 2,1 de
-media, sin ningún fallo. La herramienta ocupa 4,0 MB, el 0,025 % de la
+rendimiento. Con la memoria del sistema al 85 % y los doce procesadores
+lógicos al 100 %, las operaciones se ralentizan entre 1,6 y 3,3 veces, 2,1 de
+media, sin ningún fallo. La herramienta ocupa 4,0 MB, el 0,024 % de la
 memoria del sistema, y sus lecturas coinciden con las de los comandos nativos
 de ambos sistemas.
 
@@ -197,8 +197,8 @@ y con g++ 15.2 en Linux, exigiendo cero advertencias en ambos.
 
 **Módulos.** `GestorArchivos` implementa la gestión de archivos con la frontera
 de directorio; `Sistema.h` declara las consultas de procesos y memoria, con dos
-implementaciones; `Menu` conduce la interfaz de consola; `ReporteConsola` da
-formato a las vistas; `Cronometro`, `Medicion` y `Estadistica` sostienen las
+implementaciones; `Menu` conduce la interfaz de consola y pagina la lista de procesos;
+`ReporteConsola` da formato a las vistas; `Cronometro`, `Medicion` y `Estadistica` sostienen las
 mediciones.
 
 **Código reutilizado.** Conforme a las Consideraciones Transversales del
@@ -207,7 +207,7 @@ tablas ASCII, copia del Proyecto 1 al 3 cambiando solo el espacio de nombres,
 y las funciones de media y desviación muestral, extraídas del Proyecto 2 y
 usadas también en el 3.
 
-**Pruebas.** Una suite propia de 26 pruebas, sin framework externo, que corre
+**Pruebas.** Una suite propia de 30 pruebas, sin framework externo, que corre
 sin cambios en las dos plataformas. Para probar «comando no disponible» sin
 desinstalar nada, la capa de plataforma expone `listarProcesosCon()`, que
 acepta otro comando; la misma costura permite probar el análisis de salidas
@@ -226,7 +226,8 @@ make tests           compila y ejecuta la suite
 
 **El menú recibe los flujos de entrada y salida por constructor** en lugar de
 usar la consola directamente. Eso permite conducirlo desde un guion para
-generar evidencia sin que nadie teclee, y es lo que hace `EJECUTAR.bat`.
+generar evidencia sin que nadie teclee, y es lo que hace
+`EJECUTAR (Demostraciones).bat`; `EJECUTAR.bat` abre el mismo menú para usarlo a mano.
 
 ## 6. Resultados Experimentales
 
@@ -250,10 +251,10 @@ La Tabla 1 recoge los tiempos totales de cada operación en las tres escalas.
 
 | Operación | 10 archivos | 100 archivos | 1000 archivos |
 |---|---:|---:|---:|
-| crear | 7,8 ± 0,3 | 77,9 ± 3,0 | 839,0 ± 147,7 |
-| listar | 0,23 ± 0,30 † | 0,36 ± 0,31 † | 1,48 ± 0,32 |
-| metadatos | 1,50 ± 0,04 | 14,2 ± 0,7 | 143,3 ± 5,9 |
-| eliminar | 2,08 ± 0,07 | 24,2 ± 0,9 | 231,4 ± 14,1 |
+| crear | 8,7 ± 0,8 | 83,9 ± 6,4 | 885,0 ± 73,6 |
+| listar | 0,28 ± 0,36 † | 0,42 ± 0,36 † | 1,56 ± 0,39 |
+| metadatos | 1,60 ± 0,16 | 14,3 ± 0,6 | 244,9 ± 95,3 |
+| eliminar | 2,28 ± 0,16 | 25,1 ± 1,5 | 230,8 ± 24,5 |
 
 † Desviación mayor que la mitad de la media: la herramienta marca estas
 mediciones como no fiables, y no se usan para sacar conclusiones.
@@ -265,30 +266,36 @@ permite comparar escalas distintas.
 
 | Operación | 10 | 100 | 1000 |
 |---|---:|---:|---:|
-| crear | 0,782 | 0,779 | 0,839 |
-| listar | 0,023 † | 0,004 † | 0,0015 |
-| metadatos | 0,150 | 0,142 | 0,143 |
-| eliminar | 0,208 | 0,242 | 0,231 |
+| crear | 0,869 | 0,839 | 0,885 |
+| listar | 0,028 † | 0,004 † | 0,0016 |
+| metadatos | 0,160 | 0,143 | 0,245 |
+| eliminar | 0,228 | 0,251 | 0,231 |
 
-Crear, consultar metadatos y eliminar tienen un coste por archivo **estable**:
-entre las tres escalas varía como mucho un 16 %. Son operaciones
-lineales, en las que cada archivo cuesta al menos una llamada al sistema.
+Crear y eliminar tienen un coste por archivo **estable**: entre las tres
+escalas varía un 6 % y un 10 %. Son operaciones lineales, en las que cada
+archivo cuesta al menos una llamada al sistema. Consultar metadatos se
+comporta igual en 10 y 100 archivos (0,160 y 0,143 ms), pero en la corrida de
+1000 subió a 0,245 con una desviación del 39 % de la media: esa fila está
+contaminada por ruido de la máquina —el antivirus inspecciona cada archivo que
+se abre— y no sostiene una conclusión de escalabilidad por sí sola.
 
-**Listar se comporta distinto**, pero hay que decirlo con cuidado. Con 10 y 100
+**Listar se comporta distinto**, y hay que decirlo con cuidado. Con 10 y 100
 archivos el tiempo es de décimas de milisegundo y la desviación lo iguala, así
 que esas dos cifras no sostienen ninguna comparación. La cifra fiable es la de
-1000 archivos: **1,48 ms para enumerar 1000 entradas con su tamaño, fecha y
-permisos**. Consultar esos mismos metadatos archivo por archivo cuesta
-143,3 ms, **97 veces más**, aunque la información obtenida es la misma. Es la
-diferencia descrita en la sección 3.1: la enumeración trae los atributos de
-muchas entradas por llamada, mientras que la consulta por nombre resuelve la
-ruta y abre cada archivo.
+1000 archivos: **1,56 ms para enumerar 1000 entradas con su tamaño, fecha y
+permisos**. Consultar esos mismos metadatos archivo por archivo cuesta 244,9 ms
+de media; incluso tomando el extremo más favorable de su dispersión, unos
+150 ms, la enumeración sigue siendo **unas cien veces más barata** para obtener
+la misma información. Es la diferencia descrita en la sección 3.1: la
+enumeración trae los atributos de muchas entradas por llamada, mientras que la
+consulta por nombre resuelve la ruta y abre cada archivo.
 
 ### 6.2 Comportamiento bajo carga
 
 Se repitieron las mismas mediciones con el sistema cargado según los
 Laboratorios 4 y 6. El script aplica primero la carga de memoria —un proceso
-que reserva y escribe 4,1 GB—, espera a que confirme que terminó, y después
+que reserva y escribe 1,5 GB, lo que hacía falta para llegar al objetivo de
+ocupación con la memoria que había libre—, espera a que confirme que terminó, y después
 lanza doce procesos de CPU en bucle, uno por procesador lógico. Solo empieza a
 medir cuando todos confirmaron que están en marcha. La Tabla 3 recoge el
 estado del sistema comprobado por el propio script.
@@ -297,9 +304,9 @@ estado del sistema comprobado por el propio script.
 
 | Magnitud | Valor |
 |---|---:|
-| Memoria disponible antes | 6626 MB |
-| Memoria ocupada por la carga | 4386 MB |
-| Ocupación de memoria al medir | 86,4 % |
+| Memoria disponible antes | 3885 MB |
+| Memoria ocupada por la carga | 1457 MB |
+| Ocupación de memoria al medir | 84,9 % |
 | Uso de CPU al empezar a medir | 100 % |
 | Uso de CPU al terminar | 100 % |
 | Procesos de carga vivos al terminar | 13 de 13 |
@@ -311,13 +318,13 @@ entre tiempo sin carga.
 
 | Operación | 10 | 100 | 1000 |
 |---|---:|---:|---:|
-| crear | 1,84 | 1,82 | 2,20 |
-| listar | 1,91 † | 2,05 † | 3,83 |
-| metadatos | 2,11 | 1,96 | 2,37 |
-| eliminar | 1,59 | 2,02 | 1,87 |
+| crear | 1,66 | 1,94 | 2,54 |
+| listar | 1,79 † | 1,62 † | 3,29 |
+| metadatos | 1,75 | 2,01 | 1,77 |
+| eliminar | 1,81 | 2,04 | 2,44 |
 
-La ralentización va de 1,59 a 3,83 veces, con una media de 2,13; sin las dos
-filas no fiables, la media es 2,16. **Ninguna operación falló ni devolvió datos
+La ralentización va de 1,62 a 3,29 veces, con una media de 2,06; sin las dos
+filas no fiables, la media es 2,13. **Ninguna operación falló ni devolvió datos
 incorrectos**: solo tardaron más. El listado de 1000 archivos es la operación
 que más se degrada, lo que es coherente con que la presión de memoria reduce
 probablemente la caché del sistema de archivos, de la que el listado depende
@@ -332,7 +339,7 @@ La Tabla 5 recoge lo que la herramienta gasta mientras opera.
 | Métrica | Valor |
 |---|---:|
 | Memoria residente | 4,0 MB |
-| Sobre la memoria del sistema | 0,025 % |
+| Sobre la memoria del sistema | 0,024 % |
 
 Se mide con el mismo mecanismo que el resto de procesos, filtrando por el
 identificador propio: no hizo falta código adicional, y las cifras son
@@ -347,11 +354,11 @@ muestra la opción 2 del menú.
 |---|---|---|
 | Compilador | MSVC 19.51 | g++ 15.2 |
 | Advertencias | 0 | 0 |
-| Suite de pruebas | 26/26 | 26/26 |
-| Crear, ms por archivo | 0,779 | 0,051 |
+| Suite de pruebas | 30/30 | 30/30 |
+| Crear, ms por archivo | 0,839 | 0,050 |
 
 La Tabla 6 muestra que el mismo código fuente compila y pasa la suite en los
-dos sistemas. Crear un archivo cuesta unas 15 veces más en Windows, con 100
+dos sistemas. Crear un archivo cuesta unas 17 veces más en Windows, con 100
 archivos y el mismo método. No es una comparación limpia entre sistemas
 operativos —cambian el sistema de archivos, la capa de virtualización de WSL2
 y el antivirus—, pero sí indica que el coste dominante no está en el código de
@@ -409,9 +416,9 @@ escalas, con media y desviación sobre cinco repeticiones y una pasada de
 calentamiento previa, y se comparan con y sin carga comprobada del sistema
 (Tablas 1 a 4). El reporte advierte automáticamente cuando la desviación supera
 la mitad de la media, y esas filas no se usan para concluir. El consumo propio
-es de 4,0 MB.
+es de 4,0 MB (0,024 % de la memoria del equipo).
 
-**Fiabilidad (4).** 26 pruebas automatizadas que pasan en las dos plataformas.
+**Fiabilidad (4).** 30 pruebas automatizadas que pasan en las dos plataformas.
 Los tres casos de error del enunciado se provocan de verdad: archivo
 inexistente, permisos insuficientes retirando el permiso con la herramienta
 del sistema, y comando no disponible mediante una variante parametrizada de la
@@ -438,8 +445,8 @@ sistema operativo sería un archivo nuevo que implemente la misma interfaz.
 
 **Lo que decide el rendimiento es el número de llamadas al sistema.** El
 resultado más útil de las Tablas 1 y 2 es la comparación entre listar y
-consultar metadatos: la misma información cuesta 97 veces menos obtenida por
-lote. Si la herramienta tuviera que manejar diez mil archivos, el cuello de
+consultar metadatos: la misma información cuesta unas cien veces menos
+obtenida por lote. Si la herramienta tuviera que manejar diez mil archivos, el cuello de
 botella serían las operaciones que hacen una o más llamadas por archivo
 —crear, consultar metadatos y eliminar—, y la optimización útil sería
 agruparlas o reutilizar la información de la enumeración, no acelerar el
@@ -451,7 +458,7 @@ CPU que ya está repartido. Si los doce procesadores fueran núcleos completos,
 el reparto justo daría una ralentización pequeña, de apenas 13 hilos sobre 12.
 Pero el Ryzen 5 5600 tiene **seis núcleos físicos** con multihilo simultáneo
 (sección 3.2): cuando los doce procesadores lógicos están ocupados, cada hilo
-dispone aproximadamente de medio núcleo. Un factor medio de 2,1 coincide con
+dispone aproximadamente de medio núcleo. Un factor medio de 2,06 coincide con
 esa explicación. Lo relevante para una herramienta de monitoreo no es que no
 se degrade —eso sería imposible— sino que siga funcionando correctamente, y así
 fue.
@@ -478,9 +485,9 @@ Linux real pero no reproduce el hardware ni la carga de un servidor; por eso
 las cifras entre plataformas no son comparables en sentido estricto. (d) El
 monitoreo es una fotografía instantánea y no un seguimiento continuo. (e) La
 memoria por proceso incluye las páginas compartidas (sección 6.7), así que la
-«memoria sumada de todos» que muestra la lista de procesos las cuenta varias
-veces y no equivale a la memoria usada del sistema, que se consulta en la
-opción 3 del menú.
+«memoria sumada de todos» las cuenta varias veces y no equivale a la memoria
+usada del sistema; la herramienta lo advierte en esa misma línea y la memoria
+del sistema se consulta en la opción 3 del menú.
 
 ## 9. Conclusiones
 
@@ -490,8 +497,8 @@ dos sistemas operativos, con la misma suite de pruebas pasando en ambos.
 
 Tres resultados resumen el trabajo. Primero, el coste de las operaciones de
 archivo lo decide el número de llamadas al sistema: obtener los metadatos por
-lote es casi cien veces más barato que pedirlos uno a uno. Segundo, con la
-memoria al 86 % y la CPU al 100 %, la herramienta se ralentiza unas dos veces
+lote es unas cien veces más barato que pedirlos uno a uno. Segundo, con la
+memoria al 85 % y la CPU al 100 %, la herramienta se ralentiza unas dos veces
 —lo que predice un procesador de seis núcleos con doce procesadores lógicos
 ocupados— y sigue siendo correcta. Tercero, la separación de la capa de
 plataforma redujo el código dependiente del sistema a dos ficheros, y eso es lo

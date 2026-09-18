@@ -3,8 +3,10 @@
 **Fabrizio Espinoza Arce** · TIIT2007 Sistemas Operativos · Universidad Invenio
 
 Índice de correspondencia entre lo que pide el enunciado y dónde está en este
-paquete. Para verlo funcionando, ejecute **`EJECUTAR.bat`**: recorre los cuatro
-requisitos funcionales y los resultados experimentales, uno por uno y rotulados.
+paquete. Para **usar** la herramienta, ejecute **`EJECUTAR.bat`**: compila y abre el
+menú interactivo. Para un recorrido guiado de los cuatro requisitos funcionales y
+los resultados experimentales, uno por uno y rotulados, ejecute
+**`EJECUTAR (Demostraciones).bat`**.
 
 ---
 
@@ -20,11 +22,14 @@ requisitos funcionales y los resultados experimentales, uno por uno y rotulados.
 | `src/io/ReporteConsola.{h,cpp}` | Presentación de las tres vistas y de las mediciones |
 | `src/core/` | Lógica pura: estadística, cronómetro, tipos de medición |
 | `src/main.cpp` | Orquestador |
-| `tests/test_recursos.cpp` | 26 pruebas, arnés propio sin framework externo |
-| `build.bat`, `Makefile`, `EJECUTAR.bat` | Compilación en Windows y en Linux |
+| `tests/test_recursos.cpp` | 30 pruebas, arnés propio sin framework externo |
+| `build.bat`, `Makefile` | Compilación en Windows y en Linux |
+| `EJECUTAR.bat` | Compila y abre el menú interactivo |
+| `EJECUTAR (Demostraciones).bat` | Recorrido guiado de requisitos y resultados |
+| `EJECUTAR (Todo).bat` | Panel de la herramienta: abrir, demostrar, probar y ver resultados |
 
 **Nota sobre la arquitectura:** todo el código dependiente del sistema operativo
-está en `src/plataforma/`. Son 382 líneas de 2 748, el 14 % del total.
+está en `src/plataforma/`. Son 382 líneas de 2 748, el 14 % del total.
 
 ## 2. Evidencia de pruebas de carga
 
@@ -36,16 +41,13 @@ está en `src/plataforma/`. Son 382 líneas de 2 748, el 14 % del total.
 
 La carga son doce procesos de CPU en bucle más un proceso que reserva y escribe
 memoria, según los Laboratorios 4 y 6. El script la genera, **comprueba que está
-aplicada antes y después de medir** —en la corrida entregada: memoria al 86,4 %,
-CPU al 100 %, 13 de 13 procesos de carga vivos al terminar— y la retira solo.
+aplicada antes y después de medir** —en la corrida entregada: memoria al 84,9 %,
+CPU al 100 %, 13 de 13 procesos de carga vivos al terminar— y la retira solo.
 
 ## 3. Resultados experimentales
 
-Todo en `results/`, regenerable con **un comando**:
-
-```
-powershell -ExecutionPolicy Bypass -File scripts\correr_experimentos.ps1
-```
+Todo en `results/`, regenerable con **`scripts\correr_experimentos.ps1`**
+(clic derecho → «Ejecutar con PowerShell»):
 
 | Archivo | Resultado |
 |---|---|
@@ -56,7 +58,7 @@ powershell -ExecutionPolicy Bypass -File scripts\correr_experimentos.ps1
 | `results/errores_manejados.txt` | **RNF-1**: los tres casos de error, provocados |
 | `results/pureza_plataforma.txt` | Evidencia de que `windows.h` vive en un solo sitio |
 | `results/compatibilidad_linux.txt` | **RNF-2**: la misma herramienta compilada y probada en Linux |
-| `results/pruebas_windows.txt` | Salida completa de las 26 pruebas |
+| `results/pruebas_windows.txt` | Salida completa de las 30 pruebas |
 | `results/csv/` | Datos crudos para recalcular cualquier resumen |
 
 ## 4. Documento IEEE completo
@@ -87,15 +89,15 @@ Las cinco características en **nivel 4**, cada una con su archivo de evidencia.
 
 | Requisito | Dónde se implementa | Cómo verlo |
 |---|---|---|
-| RF-1 archivos | `plataforma/Archivos.cpp` | `EJECUTAR.bat` demo 1 |
-| RF-2 procesos | `plataforma/Sistema*.cpp` | `EJECUTAR.bat` demo 2 |
-| RF-3 memoria | `plataforma/Sistema*.cpp` | `EJECUTAR.bat` demo 3 |
-| RF-4 menú | `io/Menu.cpp` | `EJECUTAR.bat` demo 1 |
-| RNF-1 errores | Excepciones en toda la capa | `EJECUTAR.bat` demo 4 |
+| RF-1 archivos | `plataforma/Archivos.cpp` | `EJECUTAR (Demostraciones).bat` demo 1 |
+| RF-2 procesos | `plataforma/Sistema*.cpp` | `EJECUTAR (Demostraciones).bat` demo 2 |
+| RF-3 memoria | `plataforma/Sistema*.cpp` | `EJECUTAR (Demostraciones).bat` demo 3 |
+| RF-4 menú | `io/Menu.cpp` | `EJECUTAR (Demostraciones).bat` demo 1 |
+| RNF-1 errores | Excepciones en toda la capa | `EJECUTAR (Demostraciones).bat` demo 4 |
 | RNF-2 portabilidad | `src/plataforma/` | `results/compatibilidad_linux.txt` |
-| RE-1 rendimiento | — | `EJECUTAR.bat` demo 5 |
+| RE-1 rendimiento | — | `EJECUTAR (Demostraciones).bat` demo 5 |
 | RE-2 carga | — | `results/prueba_carga.txt` |
-| RE-3 autoconsumo | — | `EJECUTAR.bat` demo 5 |
+| RE-3 autoconsumo | — | `EJECUTAR (Demostraciones).bat` demo 5 |
 
 ## Material adicional (no exigido)
 

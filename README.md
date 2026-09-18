@@ -10,21 +10,15 @@ navegación. Funciona en **Windows y en Linux**, y ambas ramas están verificada
 
 ## Empezar en un comando
 
-Doble clic en `EJECUTAR.bat`, o desde cualquier consola:
+| Script | Qué hace |
+|---|---|
+| **`EJECUTAR.bat`** | Compila y **abre el menú interactivo**, con la carpeta `trabajo/` como directorio controlado. Es la forma de usar la herramienta |
+| `EJECUTAR (Demostraciones).bat` | Recorrido guiado: compila, ejecuta las 30 pruebas y demuestra uno por uno los requisitos y los resultados, conduciendo el menú de forma automática |
+| `EJECUTAR (Todo).bat` | Panel de la herramienta: abrirla, la demostración, correr las 30 pruebas y ver la carpeta de resultados |
 
-```
-EJECUTAR.bat
-```
-
-Configura Visual Studio por su cuenta, compila, ejecuta las 26 pruebas y recorre
-los cuatro requisitos funcionales y los resultados experimentales, uno por uno.
-No hace falta abrir la «Developer Command Prompt».
-
-Para usarla de verdad:
-
-```
-build\recursos.exe
-```
+Los dos se abren con doble clic: configuran Visual Studio por su cuenta, sin
+abrir la «Developer Command Prompt». `EJECUTAR.bat` pasa sus opciones al
+programa, por ejemplo `EJECUTAR.bat --dir otra_carpeta` o `EJECUTAR.bat --help`.
 
 ---
 
@@ -33,10 +27,10 @@ build\recursos.exe
 | Qué | Windows | Linux | Evidencia |
 |---|---|---|---|
 | Compilación sin advertencias | Cero | Cero | `results/compatibilidad_linux.txt` |
-| Suite de pruebas | **26/26** | **26/26** | `results/pruebas_windows.txt` |
+| Suite de pruebas | **30/30** | **30/30** | `results/pruebas_windows.txt` |
 | Las tres funciones del enunciado | Sí | Sí | `results/vistas_menu.txt` |
 | Los tres casos de error (inexistente, permisos, comando) | Sí | Sí | `results/errores_manejados.txt` |
-| Carga del RE-2 comprobada | Memoria 86 %, CPU 100 % | — | `results/prueba_carga.txt` |
+| Carga del RE-2 comprobada | Memoria 85 %, CPU 100 % | — | `results/prueba_carga.txt` |
 
 **A diferencia de los Proyectos 2 y 3, aquí la rama de Linux no se declara: se
 ejecuta.** El mismo código fuente compila con MSVC y con g++ y pasa la misma
@@ -50,25 +44,26 @@ suite en los dos sistemas.
 
 | Operación | 10 | 100 | 1000 | Escala |
 |---|---:|---:|---:|---|
-| crear | 0,782 | 0,779 | 0,839 | lineal |
-| listar | 0,023 \* | 0,004 \* | 0,0015 | por lote |
-| metadatos | 0,150 | 0,142 | 0,143 | lineal |
-| eliminar | 0,208 | 0,242 | 0,231 | lineal |
+| crear | 0,869 | 0,839 | 0,885 | lineal |
+| listar | 0,028 \* | 0,004 \* | 0,0016 | por lote |
+| metadatos | 0,160 | 0,143 | 0,245 \*\* | lineal |
+| eliminar | 0,228 | 0,251 | 0,231 | lineal |
 
 \* Desviación mayor que la mitad de la media: no fiable, no se usa para concluir.
+\*\* Dispersión del 39 % en esa corrida: ruido de la máquina, no escalabilidad.
 
 **Tres hallazgos:**
 
 1. **Lo que decide el coste es el número de llamadas al sistema.** Listar 1000
-   archivos con sus metadatos tarda 1,5 ms; pedir esos mismos metadatos uno a
-   uno, 143 ms: 97 veces más. Con diez mil archivos, el cuello de botella
-   serían crear, metadatos y eliminar, que hacen al menos una llamada por
-   archivo.
-2. **Bajo carga comprobada** —memoria al 86 %, los 12 procesadores lógicos al
-   100 %— **la herramienta se ralentiza 2,1 veces de media** (entre 1,6 y 3,8),
-   lo esperable en un procesador de 6 núcleos físicos, y ninguna operación
-   falló.
-3. **Crear un archivo cuesta unas 15 veces más en Windows que en Linux (WSL2)**
+   archivos con sus metadatos tarda 1,6 ms; pedir esos mismos metadatos uno a
+   uno, unos dos órdenes de magnitud más. Con diez mil archivos, el cuello de
+   botella serían crear, metadatos y eliminar, que hacen al menos una llamada
+   por archivo.
+2. **Bajo carga comprobada** —memoria al 85 %, los 12 procesadores lógicos al
+   100 %— **la herramienta se ralentiza 2,06 veces de media** (entre 1,6 y
+   3,3), lo esperable en un procesador de 6 núcleos físicos, y ninguna
+   operación falló.
+3. **Crear un archivo cuesta unas 17 veces más en Windows que en Linux (WSL2)**
    en el mismo equipo. El coste dominante no está en el código de la
    herramienta.
 
@@ -93,14 +88,20 @@ la interfaz principal.
 
 ## Reproducir toda la evidencia
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\correr_experimentos.ps1
-powershell -ExecutionPolicy Bypass -File scripts\verificar_linux.ps1
-```
+Los experimentos no están en el panel de la herramienta: son tarea de autor, no
+de quien la evalúa. Cada uno es un script de `scripts\`, que se ejecuta con
+clic derecho → «Ejecutar con PowerShell», o desde una consola:
 
-El primero compila, corre las pruebas, ejecuta los tres experimentos y provoca
-los tres casos de error. **Aborta si la suite no pasa.** El segundo compila y
-prueba la rama de Linux en WSL, instalando `g++` si hace falta.
+| Script | Qué regenera | Tarda |
+|---|---|---|
+| `correr_experimentos.ps1` | Toda la evidencia de Windows: pruebas, tiempos, carga y casos de error | ~4 min |
+| `verificar_linux.ps1` | Evidencia de Linux: compila y prueba la misma suite en WSL | ~1 min |
+| `docs\generar_documentos.ps1` | Documentos Word y PDF (IEEE y autoevaluación) | ~1 min |
+| `empaquetar_entrega.ps1` | ZIP y PDF listos en `Entregables Proyecto 4` | segundos |
+
+El primero **aborta si la suite no pasa**: no se generan resultados sobre un
+binario que falla sus propias pruebas. El segundo instala `g++` en WSL si hace
+falta.
 
 ---
 
@@ -111,7 +112,7 @@ src/core/         Logica pura: estadistica, cronometro, mediciones
 src/plataforma/   TODO lo que toca el sistema operativo
 src/io/           Menu, reportes, tablas
 src/main.cpp      Solo orquesta
-tests/            Arnes propio, 26 pruebas, sin framework
+tests/            Arnes propio, 30 pruebas, sin framework
 scripts/          Experimentos, verificacion de Linux y de documentos
 results/          Evidencia generada. Se versiona a proposito
 docs/             Documento IEEE, QA y plan de trabajo
@@ -121,7 +122,7 @@ docs/             Documento IEEE, QA y plan de trabajo
 `src/plataforma/`. Se comprueba buscando `#include <windows.h>` fuera de ahí, y
 **la salida vacía es la evidencia**.
 
-Son **382 líneas específicas de plataforma sobre 2 748 totales: el 14 %**. Ese
+Son **382 líneas específicas de plataforma sobre 2 748 totales: el 14 %**. Ese
 porcentaje es la medida concreta de lo que costaría portar la herramienta a un
 tercer sistema operativo.
 

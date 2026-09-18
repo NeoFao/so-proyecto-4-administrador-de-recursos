@@ -1,7 +1,7 @@
 ﻿Evidencia de compatibilidad -- rama de Linux
 =====================================================================
 
-Generado: 2026-09-17 08:57:51
+Generado: 2026-09-17 18:49:04
 
 ENTORNO
   Distribucion : Ubuntu 26.04 LTS
@@ -46,7 +46,11 @@ SUITE DE PRUEBAS EN LINUX
   [OK] 6.1 Cronometro monotono
   [OK] 6.2 Estadistica muestral
   [OK] 6.3 FormatoTabla
-  26/26 pruebas superadas
+  [OK] 6.4 Paginado de la lista de procesos
+  [OK] 6.5 Listado completo con --todos
+  [OK] 6.6 Permisos explicados en palabras
+  [OK] 6.7 El menu ofrece el consumo propio (RE-3)
+  30/30 pruebas superadas
 
 DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
 
@@ -65,6 +69,7 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
      1) Gestion de archivos      (crear, listar, eliminar, metadatos)
      2) Monitoreo de procesos    (PID, nombre, memoria)
      3) Monitoreo de memoria     (total, usada, disponible)
+     4) Consumo de esta herramienta
      0) Salir
   ------------------------------------------------------------------
    Opcion: 
@@ -92,10 +97,12 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
   +-------------+--------+---------------------+-----------+
   |   Nombre    | Tamano |     Modificado      | Permisos  |
   +-------------+--------+---------------------+-----------+
-  | informe.txt |   19 B | 2026-09-17 08:58:04 | rw-r--r-- |
+  | informe.txt |   19 B | 2026-09-17 18:49:16 | rw-r--r-- |
   +-------------+--------+---------------------+-----------+
   
      1 entradas, 19 B en total
+     Permisos: r leer, w escribir, x ejecutar; en tres grupos,
+     dueno / grupo / otros. Un guion es un permiso que no esta.
   
      --- Gestion de archivos ---------------------------------------
        1) Listar archivos y metadatos
@@ -109,8 +116,9 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
   
      Tipo       : archivo
      Tamano     : 19 bytes (19 B)
-     Modificado : 2026-09-17 08:58:04
+     Modificado : 2026-09-17 18:49:16
      Permisos   : rw-r--r--
+                  (segun estas letras, dueno: leer y escribir; grupo: leer; otros: leer)
   
      Nota sobre los permisos: en Linux los nueve bits son los
      reales del inodo, y un archivo nuevo sale como rw-r--r--. En
@@ -132,41 +140,46 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
      1) Gestion de archivos      (crear, listar, eliminar, metadatos)
      2) Monitoreo de procesos    (PID, nombre, memoria)
      3) Monitoreo de memoria     (total, usada, disponible)
+     4) Consumo de esta herramienta
      0) Salir
   ------------------------------------------------------------------
    Opcion: your 131072x1 screen size is bogus. expect trouble
   
-  -- Procesos activos (RF-2) ---------------------------------------
+  -- Procesos activos (RF-2) -- pagina 1 de 3 ------------------
   
   +-----+-----------------+---------+
   | PID |     Proceso     | Memoria |
   +-----+-----------------+---------+
-  | 320 | unattended-upgr | 31.1 MB |
-  | 122 | networkd-dispat | 27.2 MB |
-  |  47 | systemd-journal | 15.2 MB |
-  |   1 | systemd         | 14.1 MB |
-  |  65 | systemd-resolve | 13.6 MB |
-  | 460 | systemd         | 12.9 MB |
-  | 154 | wsl-pro-service | 12.8 MB |
-  |  88 | systemd-udevd   | 11.4 MB |
-  | 231 | chronyd         | 10.6 MB |
-  | 142 | systemd-logind  |  8.5 MB |
-  | 342 | systemd-timedat |  7.0 MB |
-  | 562 | (udev-worker)   |  6.5 MB |
-  | 563 | (udev-worker)   |  6.5 MB |
-  | 564 | (udev-worker)   |  6.5 MB |
-  | 565 | (udev-worker)   |  6.5 MB |
+  | 262 | unattended-upgr | 31.1 MB |
+  | 151 | networkd-dispat | 27.5 MB |
+  |  47 | systemd-journal | 15.1 MB |
+  |   1 | systemd         | 14.2 MB |
+  | 168 | wsl-pro-service | 14.0 MB |
+  |  65 | systemd-resolve | 13.8 MB |
+  | 411 | systemd         | 12.4 MB |
+  |  88 | systemd-udevd   | 11.2 MB |
+  | 220 | chronyd         | 10.8 MB |
+  | 163 | systemd-logind  |  8.9 MB |
+  | 286 | systemd-timedat |  7.0 MB |
+  | 489 | (udev-worker)   |  6.5 MB |
+  | 484 | (udev-worker)   |  6.5 MB |
+  | 491 | (udev-worker)   |  6.5 MB |
+  | 488 | (udev-worker)   |  6.4 MB |
   +-----+-----------------+---------+
   
-     35 procesos activos en total (se muestran los 15 de mayor consumo)
-     Memoria sumada de todos: 256.7 MB
+     Puestos 1 a 15, ordenados por memoria
   
+     37 procesos activos en total
+     Memoria sumada de todos: 269.7 MB (cuenta varias veces las paginas compartidas)
+  
+     [Enter] pagina siguiente   [a] anterior   [0] volver: 
   ==================================================================
    MENU PRINCIPAL
   ==================================================================
      1) Gestion de archivos      (crear, listar, eliminar, metadatos)
      2) Monitoreo de procesos    (PID, nombre, memoria)
      3) Monitoreo de memoria     (total, usada, disponible)
+     4) Consumo de esta herramienta
      0) Salir
   ------------------------------------------------------------------
    Opcion: 
@@ -176,11 +189,11 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
   |  Metrica   |  Valor   | Porcentaje |
   +------------+----------+------------+
   | Total      |   7.7 GB |    100.0 % |
-  | Usada      | 525.2 MB |      6.7 % |
-  | Disponible |   7.2 GB |     93.3 % |
+  | Usada      | 520.5 MB |      6.6 % |
+  | Disponible |   7.2 GB |     93.4 % |
   +------------+----------+------------+
   
-     Ocupacion: [###.....................................] 6.7 %
+     Ocupacion: [###.....................................] 6.6 %
   
   ==================================================================
    MENU PRINCIPAL
@@ -188,6 +201,31 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
      1) Gestion de archivos      (crear, listar, eliminar, metadatos)
      2) Monitoreo de procesos    (PID, nombre, memoria)
      3) Monitoreo de memoria     (total, usada, disponible)
+     4) Consumo de esta herramienta
+     0) Salir
+  ------------------------------------------------------------------
+   Opcion: your 131072x1 screen size is bogus. expect trouble
+  
+  -- Consumo de la propia herramienta (RE-3) -----------------------
+  
+  +------------------------------+---------+
+  |           Metrica            |  Valor  |
+  +------------------------------+---------+
+  | PID de la herramienta        |     540 |
+  | Memoria residente            |  4.4 MB |
+  | Sobre la memoria del sistema | 0.055 % |
+  +------------------------------+---------+
+  
+     Se mide con el mismo mecanismo que el resto de procesos,
+     filtrando por el PID propio: no hace falta codigo adicional.
+  
+  ==================================================================
+   MENU PRINCIPAL
+  ==================================================================
+     1) Gestion de archivos      (crear, listar, eliminar, metadatos)
+     2) Monitoreo de procesos    (PID, nombre, memoria)
+     3) Monitoreo de memoria     (total, usada, disponible)
+     4) Consumo de esta herramienta
      0) Salir
   ------------------------------------------------------------------
    Opcion: 
@@ -196,10 +234,10 @@ DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX
 RENDIMIENTO EN LINUX (100 archivos, 5 repeticiones, tras calentamiento)
 
   | Operacion | Archivos | ms (media +- s) | ms/archivo |
-  | crear     |      100 |  5.128 +- 0.199 |     0.0513 |
-  | listar    |      100 |  0.774 +- 0.028 |     0.0077 |
-  | metadatos |      100 |  2.075 +- 0.081 |     0.0207 |
-  | eliminar  |      100 |  3.266 +- 0.055 |     0.0327 |
+  | crear     |      100 |  4.979 +- 0.388 |     0.0498 |
+  | listar    |      100 |  0.732 +- 0.025 |     0.0073 |
+  | metadatos |      100 |  1.967 +- 0.076 |     0.0197 |
+  | eliminar  |      100 |  3.354 +- 0.254 |     0.0335 |
 
 =====================================================================
 RESULTADO: la rama de Linux compila sin advertencias, pasa la suite

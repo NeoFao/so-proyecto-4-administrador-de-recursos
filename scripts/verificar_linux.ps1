@@ -157,7 +157,7 @@ if ($fallidas) {
 
 # --- Demostracion de las tres funciones en Linux ------------------------------
 Write-Host "[4/4] Demostrando las tres funciones en Linux ..."
-$demo = wsl -d $distro -- bash -lc "cd ~/p4_verif && mkdir -p demo && printf '1\n2\ninforme.txt\ncontenido de prueba\n1\n3\ninforme.txt\n0\n2\n3\n0\n' | ./build/recursos --dir demo 2>&1" 2>$null
+$demo = wsl -d $distro -- bash -lc "cd ~/p4_verif && mkdir -p demo && printf '1\n2\ninforme.txt\ncontenido de prueba\n1\n3\ninforme.txt\n0\n2\n0\n3\n4\n0\n' | ./build/recursos --dir demo 2>&1" 2>$null
 
 Escribir @("DEMOSTRACION DE LAS TRES FUNCIONES EN LINUX", "")
 Escribir ($demo | ForEach-Object { "  " + $_ })

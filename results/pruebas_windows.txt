@@ -56,9 +56,13 @@ OK: build\test_recursos.exe generado.
 [OK] 6.1 Cronometro monotono
 [OK] 6.2 Estadistica muestral
 [OK] 6.3 FormatoTabla
+[OK] 6.4 Paginado de la lista de procesos
+[OK] 6.5 Listado completo con --todos
+[OK] 6.6 Permisos explicados en palabras
+[OK] 6.7 El menu ofrece el consumo propio (RE-3)
 
 ------------------------------------------------------------------
-26/26 pruebas superadas
+30/30 pruebas superadas
 ------------------------------------------------------------------
 
 OK: la suite completa paso.

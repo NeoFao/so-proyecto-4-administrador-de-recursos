@@ -8,10 +8,10 @@
 namespace rec {
 namespace {
 
-// Cuantos procesos se muestran por omision. La lista completa de un escritorio
-// pasa de 300 entradas y llenaria la pantalla sin informar de nada; los de
-// mayor consumo son los que interesan al monitorear.
-constexpr std::size_t PROCESOS_A_MOSTRAR = 15;
+// Cuantos procesos entran en una pagina. La lista completa de un escritorio
+// pasa de 300 entradas y no cabe en pantalla; 15 caben sin tener que
+// desplazarse, y el resto se ve pasando de pagina.
+constexpr std::size_t PROCESOS_POR_PAGINA = 15;
 
 // Quita espacios y retornos de carro de los extremos.
 //
@@ -76,6 +76,7 @@ void Menu::mostrarMenuPrincipal() {
     salida_ << "   1) Gestion de archivos      (crear, listar, eliminar, metadatos)\n";
     salida_ << "   2) Monitoreo de procesos    (PID, nombre, memoria)\n";
     salida_ << "   3) Monitoreo de memoria     (total, usada, disponible)\n";
+    salida_ << "   4) Consumo de esta herramienta\n";
     salida_ << "   0) Salir\n";
     salida_ << "------------------------------------------------------------------\n";
 }
@@ -114,13 +115,15 @@ void Menu::ejecutar() {
             conManejoDeErrores("consultar los procesos", &Menu::opcionProcesos);
         } else if (opcion == "3") {
             conManejoDeErrores("consultar la memoria", &Menu::opcionMemoria);
+        } else if (opcion == "4") {
+            conManejoDeErrores("medir el consumo propio", &Menu::opcionAutoconsumo);
         } else if (opcion.empty()) {
             // Una linea en blanco solo vuelve a mostrar el menu: no es un
             // error del usuario, es haber pulsado Enter.
             continue;
         } else {
             salida_ << "\n   '" << opcion << "' no es una opcion valida."
-                    << " Escriba 1, 2, 3 o 0.\n";
+                    << " Escriba 1, 2, 3, 4 o 0.\n";
         }
     }
 }
@@ -188,11 +191,43 @@ void Menu::archivosEliminar() {
 }
 
 void Menu::opcionProcesos() {
-    imprimirProcesos(salida_, listarProcesos(), PROCESOS_A_MOSTRAR);
+    // Se consulta UNA sola vez y se ordena UNA sola vez: si cada pagina
+    // volviera a preguntar al sistema, la lista cambiaria entre paginas y el
+    // mismo proceso podria verse dos veces o ninguna.
+    std::vector<ProcesoInfo> procesos = listarProcesos();
+    ordenarPorMemoria(procesos);
+
+    std::size_t pagina = 0;
+    while (true) {
+        const std::size_t totalPaginas =
+            imprimirPaginaProcesos(salida_, procesos, pagina, PROCESOS_POR_PAGINA);
+        const bool hayMas = pagina + 1 < totalPaginas;
+
+        std::string tecla;
+        const std::string aviso = hayMas
+            ? "\n   [Enter] pagina siguiente   [a] anterior   [0] volver: "
+            : "\n   [a] pagina anterior   [Enter o 0] volver: ";
+        if (!pedir(aviso, tecla)) return;   // entrada agotada: se sale limpio
+
+        if (tecla == "0") return;
+        if (tecla == "a" || tecla == "A") {
+            if (pagina > 0) --pagina;
+            continue;
+        }
+        if (!hayMas) return;   // en la ultima pagina, cualquier otra tecla vuelve
+        ++pagina;
+    }
 }
 
 void Menu::opcionMemoria() {
     imprimirMemoria(salida_, consultarMemoria());
+}
+
+// RE-3 desde el menu: es el mismo calculo que `--autoconsumo`, porque los dos
+// llaman a la misma funcion. Si midieran por separado podrian dar cifras
+// distintas y no habria forma de saber cual creer.
+void Menu::opcionAutoconsumo() {
+    imprimirAutoconsumoActual(salida_);
 }
 
 } // namespace rec

@@ -38,6 +38,8 @@ struct Opciones {
     std::size_t cantidad = 100;     // para --benchmark
     int repeticiones = 5;
     std::string archivoCsv;
+    std::size_t topProcesos = 15;   // para --procesos
+    bool todosLosProcesos = false;
     bool mostrarAyuda = false;
 };
 
@@ -59,6 +61,8 @@ const char* AYUDA =
     "\n"
     "OPCIONES\n"
     "  --dir RUTA            directorio de trabajo (por omision: trabajo)\n"
+    "  --top N               procesos a mostrar con --procesos (por omision: 15)\n"
+    "  --todos               con --procesos, los muestra todos sin recortar\n"
     "  --cantidad N          archivos a usar en --benchmark (por omision: 100)\n"
     "  --repeticiones N      repeticiones de cada medicion (por omision: 5)\n"
     "  --csv RUTA            escribe los resultados de --benchmark en CSV\n"
@@ -100,7 +104,9 @@ bool interpretar(int argc, char** argv, Opciones& op, std::string& error) {
             if (!valorSiguiente(op.directorio)) return false;
         } else if (arg == "--csv") {
             if (!valorSiguiente(op.archivoCsv)) return false;
-        } else if (arg == "--cantidad" || arg == "--repeticiones") {
+        } else if (arg == "--todos") {
+            op.todosLosProcesos = true;
+        } else if (arg == "--cantidad" || arg == "--repeticiones" || arg == "--top") {
             std::string valor;
             if (!valorSiguiente(valor)) return false;
             long numero = 0;
@@ -122,6 +128,8 @@ bool interpretar(int argc, char** argv, Opciones& op, std::string& error) {
             }
             if (arg == "--cantidad") {
                 op.cantidad = static_cast<std::size_t>(numero);
+            } else if (arg == "--top") {
+                op.topProcesos = static_cast<std::size_t>(numero);
             } else {
                 op.repeticiones = static_cast<int>(numero);
             }
@@ -208,23 +216,6 @@ void exportarCsv(const std::string& ruta, const std::vector<rec::Medicion>& medi
     if (!salida) throw std::runtime_error("fallo la escritura de '" + ruta + "'");
 }
 
-// --- Resultado experimental 3: consumo de la propia herramienta -------------
-void mostrarAutoconsumo(std::ostream& salida) {
-    const unsigned long mio = rec::pidPropio();
-
-    rec::ProcesoInfo propio;
-    propio.pid = mio;
-    propio.nombre = "(esta herramienta)";
-
-    for (const rec::ProcesoInfo& p : rec::listarProcesos()) {
-        if (p.pid == mio) {
-            propio = p;
-            break;
-        }
-    }
-    rec::imprimirAutoconsumo(salida, propio, rec::consultarMemoria());
-}
-
 } // namespace
 
 int main(int argc, char** argv) {
@@ -256,11 +247,13 @@ int main(int argc, char** argv) {
         if (op.accion == "archivos") {
             rec::imprimirArchivos(std::cout, gestor.listar(), gestor.directorio());
         } else if (op.accion == "procesos") {
-            rec::imprimirProcesos(std::cout, rec::listarProcesos(), 15);
+            rec::imprimirProcesos(std::cout, rec::listarProcesos(),
+                                  op.todosLosProcesos ? rec::sinLimite() : op.topProcesos);
         } else if (op.accion == "memoria") {
             rec::imprimirMemoria(std::cout, rec::consultarMemoria());
         } else if (op.accion == "autoconsumo") {
-            mostrarAutoconsumo(std::cout);
+            // La misma funcion que usa la opcion 4 del menu (RE-3).
+            rec::imprimirAutoconsumoActual(std::cout);
         } else if (op.accion == "benchmark") {
             std::cout << "\n   Midiendo con " << op.cantidad << " archivos de 1 KB, "
                       << op.repeticiones << " repeticiones...\n";
